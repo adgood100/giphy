@@ -18,6 +18,8 @@ var numResults = 0;
 var	numPasses = 0;
 var searchword = "";
 var searchnum = 0;
+var searchType = "";
+var searchNum = 0;
 
 
 
@@ -93,33 +95,43 @@ function runQuery(numResults, queryURL) {
 
 
 });
-}
+};
 
   function renderButtons() {
 
+	$("gifs-appear-here").empty();
+	$("#gifs-buttons-appear-here").empty();
 	for (var i = 0; i < searchTermArray.length; i++) {
 		// Then dynamicaly generating buttons for each search topic in the array
 		// This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
 		var a = $("<button>");
+		var d = ("display-" + searchTermArray[i].replace(" ", "-"));
 		var searchword = searchTermArray[i];
 		var searchnum = searchNumRecords[i];
 		// Adding a class of btn btn-default to our button
-		a.addClass("btn btn-default");
+
+		a.addClass("btn btn-default display-gif");
 		// Adding a data-attribute
 		a.attr("data-numget", searchNumRecords[i]);
 		a.attr("data-searchget", searchTermArray[i]);
-//		a.attr("id", "display-" + searchTermArray[i].replace(" ", "-"));
-		a.attr("id", "display-gif");
-		a.attr("onclick", "displaygif()");
+		a.attr("id", "display-" + searchTermArray[i].replace(" ", "-"));
+//		a.attr("onclick", "displayimage()");
+
 		// Providing the initial button text
 		a.text(searchTermArray[i]);
 		// Adding the button to the buttons-view div
 		$("#gifs-buttons-appear-here").append(a);
 		numPasses++;
+		setListnerEvent(d, searchword);
 	}
-//	} ---
 
-//	} ---
+  };
+  
+  function setListnerEvent (d, searchword) {
+//	  document.getElementById(d).addEventListener("click", displayimage(searchword));
+	var x = ("#" +d);
+	console.log("This is the value of x:..." + x);
+	$(x).on('click', displayimage(event, searchword));
   }
 
 
@@ -141,6 +153,7 @@ $("#add-button").on("click", function(event) {
 	buildURLArray(searchTermsItem, searchNumItem);
 // Calling renderButtons which handles the processing of our buttons array
 	renderButtons();
+
 });
 
 function buildURLArray(term, num) {
@@ -154,18 +167,16 @@ function buildURLArray(term, num) {
 		console.log("This is the value of queryURL: " + queryURL);
 		searchURLArray.push(queryURL);
 	
-}
-
-
+};
 
 // on.("click") function associated with the Search Button
-function displaygif(searchget, numget) {
-//$(".display-gif").on("click", function(event) {
-  // This line allows us to take advantage of the HTML "submit" property
-  // This way we can hit enter on the keyboard and it registers the search
-  // (in addition to clicks).
-  
+//function displayimage() {
+	
+//$("#display-image").on("click", function(event) {
+function displayimage (event, searchword) { 
+	 
     console.log("I am in the display-gif onclick function 1 now");
+	var d = ("display-" + searchword.replace(" ", "-"));
 	
   event.preventDefault();
 
@@ -173,15 +184,16 @@ function displaygif(searchget, numget) {
   imageCounter = 0;
 
   // Empties the region associated with the articles
-  $("gifs-appear-here").empty();
+  $("#gifs-appear-here").empty();
   
   console.log("I am in the run-search onclick function 2 now");
 	
-	var searchType = document.getElementById('display-gif').getAttribute('data-searchget');
-	var searchNum = document.getElementById('display-gif').getAttribute('data-numget');
-	
-	console.log("This is the value of searchType: " + searchType);
-	console.log("This is the value of searchNum: " + searchNum);
+	var x = document.getElementById(d);
+
+//	searchType = x.getAttribute('data-searchget');
+	searchNum = x.getAttribute('data-numget');
+
+	searchType = searchword;
 	
   // Grabbing text the user typed into the search input
 	for (i = 0; i < searchTermArray.length; i++) {
@@ -189,6 +201,8 @@ function displaygif(searchget, numget) {
 		if (searchType === searchTermArray[i]) {
 			var queryURL = searchURLArray[i];
 			var numResults = searchNumRecords[i];
+			runQuery(numResults, queryURL);
+//			setListnerEvent(d, searchword);
 
 		}
 		
@@ -197,15 +211,20 @@ function displaygif(searchget, numget) {
 	console.log("This is the value of queryURL: " + queryURL);
 	console.log("This is the value of numResults: " + numResults);
 
-	runQuery(numResults, queryURL);
-//  renderButtons();
-}
+};
 
-// This button clears the top articles section
+
+// This button clears the buttons and images
 $("#clear-all").on("click", function() {
-  imageCounter = 0;
-  numPasses = 0;
-  $("gifs-appear-here").empty();
-  $("#gifs-buttons-appear-here").empty();
+	imageCounter = 0;
+	numPasses = 0;
+	searchType = "";
+	searchNum = 0;
+	$("#search-term").empty();
+	$("#gifs-appear-here").empty();
+	$("#gifs-buttons-appear-here").empty();
+	var searchTermArray = [];
+	var searchNumRecords = [];
+	var searchURLArray = [];
 });
 

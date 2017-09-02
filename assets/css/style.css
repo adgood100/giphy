@@ -43,6 +43,10 @@ html {
     transition: $transition;
   }
 
+  .display-gif {
+    margin: 10px;
+  }
+
   .loader {
     height: 5px;
     margin: 0;
