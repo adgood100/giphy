@@ -115,14 +115,15 @@ function runQuery(numResults, queryURL) {
 		a.attr("data-numget", searchNumRecords[i]);
 		a.attr("data-searchget", searchTermArray[i]);
 		a.attr("id", "display-" + searchTermArray[i].replace(" ", "-"));
-//		a.attr("onclick", "displayimage()");
+		a.attr("style", "margin: 5px;");
+		a.attr("onclick", "displayimage()");
 
 		// Providing the initial button text
 		a.text(searchTermArray[i]);
 		// Adding the button to the buttons-view div
 		$("#gifs-buttons-appear-here").append(a);
 		numPasses++;
-		setListnerEvent(d, searchword);
+//		setListnerEvent(d, searchword);
 	}
 
   };
@@ -168,17 +169,29 @@ function buildURLArray(term, num) {
 		searchURLArray.push(queryURL);
 	
 };
+//----
+function displayimage () { 
 
-// on.("click") function associated with the Search Button
-//function displayimage() {
+//---- clear out the current gif display
+
+	$("#gifs-appear-here").empty();
+
+//----
 	
-//$("#display-image").on("click", function(event) {
-function displayimage (event, searchword) { 
+	for (i = 0; i < searchTermArray.length; i++) {
+		
+		var searchType = searchTermArray[i]; 
+
+	}
+
+//----
 	 
     console.log("I am in the display-gif onclick function 1 now");
-	var d = ("display-" + searchword.replace(" ", "-"));
+	console.log("This is the current value of searchType:..." + searchType);
 	
-  event.preventDefault();
+	var d = ("display-" + searchType.replace(" ", "-"));
+	
+	console.log("This is the value of d:..." + d);
 
   // Initially sets the imageCounter to 0
   imageCounter = 0;
@@ -190,10 +203,7 @@ function displayimage (event, searchword) {
 	
 	var x = document.getElementById(d);
 
-//	searchType = x.getAttribute('data-searchget');
 	searchNum = x.getAttribute('data-numget');
-
-	searchType = searchword;
 	
   // Grabbing text the user typed into the search input
 	for (i = 0; i < searchTermArray.length; i++) {
@@ -202,7 +212,6 @@ function displayimage (event, searchword) {
 			var queryURL = searchURLArray[i];
 			var numResults = searchNumRecords[i];
 			runQuery(numResults, queryURL);
-//			setListnerEvent(d, searchword);
 
 		}
 		
